@@ -51,3 +51,61 @@ var threeSum = function(nums) {
 };
 
 ```
+
+### 3. Longest Substring Without Repeating Characters
+
+![image](https://user-images.githubusercontent.com/37887893/230723636-66ac22ba-1c59-4540-9be3-16a59fe5cb38.png)
+
+hashmap 儲存最後出現的位置 maxLength 代表最長的字串
+遍歷完整個字符串後，更新 maxLength 
+
+```
+var lengthOfLongestSubstring = function(s) {
+    if (s == null || s.length === 0) return 0;
+    let list = {};
+    let maxLength = 0;
+
+    for(let i = 0; i < s.length; i++){
+        let char = s[i];
+        if(list[char] !== undefined) {
+            maxLength = Math.max(maxLength, Object.keys(list).length);
+            i = list[char]; // 直接跳到上一次該字元出現的位置
+            list = {}; // 重新開始
+        } else {
+            list[char] = i;
+        }
+    }
+
+    maxLength = Math.max(maxLength, Object.keys(list).length);
+    return maxLength;
+};
+
+```
+
+不過以上性能較差改使用
+
+```
+var lengthOfLongestSubstring = function(s) {
+  let start = 0;
+  let maxLength = 0;
+  const charMap = new Map(); 
+
+  for (let i = 0; i < s.length; i++) {
+    const currentChar = s.charAt(i);
+    const prevIndex = charMap.get(currentChar); // 上次的位置
+
+    if (prevIndex !== undefined && prevIndex >= start) {
+        // 如果已經出現過且位置依樣,更新起始位置
+      start = prevIndex + 1;
+    }
+
+
+    charMap.set(currentChar, i);
+
+    maxLength = Math.max(maxLength, i - start + 1);
+  }
+
+  return maxLength;
+};
+
+```
