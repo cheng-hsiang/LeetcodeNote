@@ -109,3 +109,28 @@ var lengthOfLongestSubstring = function(s) {
 };
 
 ```
+
+### 121. Best Time to Buy and Sell Stock
+
+比較當前與之前的最小值，一邊更新最大利潤。在每次比較後，將最小值記錄下來以便下一次比較。
+
+```
+var maxProfit = function(prices) {
+
+    if(prices===null||prices.length ===0) return 0 
+    let min = prices[0]
+    let res = 0
+
+    for(let i = 0; i<prices.length ; i++){
+
+            if(prices[i] < min){
+               min = prices[i]
+            }
+            res = Math.max(res,prices[i] - min )
+    }
+    return res
+};
+
+```
+
+
